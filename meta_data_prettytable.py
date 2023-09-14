@@ -15,6 +15,20 @@ from prettytable import PrettyTable
 
 ''' LOCAL FUNCTIONS '''
 
+class FileInspectionError(Exception):
+    pass
+
+'''Define Constants for Block Size and file types
+'''
+
+# Define constants for block size and file types
+BLOCK_SIZE = 4096
+FILE_TYPE_FILE = "File"
+FILE_TYPE_DIRECTORY = "Directory"
+FILE_TYPE_LINK = "Link"
+FILE_TYPE_UNKNOWN = "Unknown"
+
+
 def GetFileMetaData(fileName):
     ''' 
         obtain filesystem metadata
@@ -45,7 +59,7 @@ def CalculateSHA256(filePath):
         sha256_hash = hashlib.sha256()
         with open(filePath, "rb") as f:
             # Read and update hash string value in blocks of 4K
-            for byte_block in iter(lambda: f.read(4096), b""):
+            for byte_block in iter(lambda: f.read(BLOCK_SIZE), b""):
                 sha256_hash.update(byte_block)
         return sha256_hash.hexdigest()
     except Exception as err:
@@ -97,7 +111,7 @@ def inspect_directory(directory):
 ''' MAIN ENTRY POINT '''
 
 def main():
-    print("\nWK-2 Final Solution: John Whalen\n")
+    print("\nWork\n")
 
     targetDIR = input('Enter a Directory Path i.e. c:/ >>> ')
     print()
@@ -124,6 +138,7 @@ def main():
 
     except Exception as err:
         print("\n\nScript Aborted     ", "Exception =     ", err)
+
 
 
 if __name__ == '__main__':
