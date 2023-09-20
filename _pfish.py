@@ -26,9 +26,11 @@ def ParseCommandLine():
     group.add_argument('--sha512', help='Specifices SHA 512 ', action='store_true')
     
     # path settings
-    parser.add_argument('-d', '--rootPath', type= ValidateDirectory, required=True, help="specify the root path for hashing")
-    parser.add_argument('-r', '--reportPath', type= ValidateDirectoryWriteable, required=True, help= "Specify the path for reports")
+    #parser.add_argument('-d', '--rootPath', type= ValidateDirectory, required=True, help="specify the root path for hashing")
+    #parser.add_argument('-r', '--reportPath', type= ValidateDirectoryWriteable, required=True, help= "Specify the path for reports")
 
+    parser.add_argument('-d', '--rootPath', type=str, required=True, help="specify the root path for hashing")
+    parser.add_argument('-r', '--reportPath', type=str, required=True, help="Specify the path for reports")
 
     gl_args = parser.parse_args()
 
@@ -42,7 +44,8 @@ def ParseCommandLine():
     else:
         gl_hashtype = 'Unknown'
     
-    logging.error('Unknown Hashtype')
+   # logging.error('Unknown Hashtype')
+   
     
 # Parse Command Line <<<
 def WalkPath():
@@ -52,8 +55,7 @@ def WalkPath():
     log.info('Root Path:' + gl_args.rootPath)
 
     oCVS = _CSVWriter(gl_args.reportPath + 'fileSystemReport.csv', gl_hashtype)
-
-    log.info('Root Path:' + gl_args.rootPath)
+    
 
     for root, dirs, files in os.walk(gl_args.rootPath):
         for file in files:
@@ -66,7 +68,8 @@ def WalkPath():
         #if not successfull increament the errorcount   
         else:
             errorCount +=1
-    
+
+
     oCVS.writerClose()
     return(processCount)
 
@@ -148,7 +151,7 @@ def HashFile(theFile, simpleName, o_result):
                             hash.update(rd)
                             hexSHA256 = hash.hexdigest()
                             hashValue = hexSHA256.upper()
-                        elif gl_args.sha512:
+                        elif gl_args.sha12:
                             # Calculate and Print the SHA512 hash
                             hash = hashlib.sha512()
                             hash.update(rd)
@@ -157,6 +160,9 @@ def HashFile(theFile, simpleName, o_result):
                         else:
                             log.error('Hash not Selected')
                             return
+                        
+                        #write data to CSV
+                        o_result.writeRow([simpleName, theFile, fileSize])
 
                         # Perform any further processing or reporting here
                         # You can use 'hashValue' to access the calculated hash
@@ -181,7 +187,7 @@ class _CSVWriter:
     log.debug 
     def __init__(self, fileName, hashType):
         try:
-            #fileName = os.path.join(reportPath,'fileSystemReport.csv')
+            fileName = os.path.join(gl_args.reportPath,'fileSystemReport.csv')
             self.csvFile = open(fileName, 'w', newline='')
             # Additional initialization code here
             self.writer = csv.writer(self.csvFile)
@@ -190,9 +196,17 @@ class _CSVWriter:
         except IOError:
             log.warning('Failed to open CSV file: ' + fileName)
 
+    def writeRow(self, rowData):
+        try:
+            self.writer.writerow(rowData)
+        except IOError:
+            log.warning('Failed to write to CSV File:' + self.filename)
+
     def writerClose(self):
         try:
             self.csvFile.close()
         except IOError:
             log.warning('Failed to close CSV file')
+
+
 
