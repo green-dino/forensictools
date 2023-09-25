@@ -1,4 +1,6 @@
 # psearch support functions 
+# CommandLine interface
+#python your_script.py -k path_to_keyword_file.txt -t path_to_target_file.txt -m path_to_matrix_file.txt
 
 import argparse
 import os
@@ -169,7 +171,9 @@ def PrintAllWordsFound(wordList):
     return
 
 class class_Matrix:
+
     weightedMatrix = set()
+
     def __init__(self):
         try:
             fileTheMatrix = open(gl_args.theMatrix, 'rb')
