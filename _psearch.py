@@ -71,7 +71,7 @@ def SearchWords():
     # log entry words to search for
     log.info('Search Words')
     log.info('Input File:'+gl_args.keyWords)
-    log.info(SearchWords)
+    log.info(searchWords)
 
     # open and read the target file, load bytearray
 
@@ -115,10 +115,65 @@ def SearchWords():
                 newWord = newWord.lower()
                 if (newWord in searchWords):
                         PrintBuffer(newWord, i-cnt, baTargetCopy, i PREDECESSOR_SIZE, WINDOW_SIZE) 
+                        indexOfWords.append([newWord, i-cnt])
+                        cnt = 0
                         print
-            else:
-                notFound.append(newWord)
-                cnt=0
-            else:
-                cnt = 0
-            
+                else:
+                    cnt = 0
+    print AllWordsFound(indexOfWords)
+    return
+# hexidecimal / ASCII Page 
+
+def  PrintHeading():
+    print("offset 00 01 02 03 04 05 06 070 80 09 0A 0B 0C 0D 0E 0F ASCII")
+    print("--------------------------------------------------------------")
+    return
+
+def PrintBuffer(word, direcOffset, buff, offset, hexSize):
+    print("%08X  " % (direcOffset))
+    PrintHeading()
+    for i in range(0, 16):
+        if i == 0:
+            print("%08x" % i, end=' ')
+        else:
+            byteValue = buff[i + offset]
+            print("%02x" % byteValue, end=' ')
+    print("")
+    for j in range (0,16):
+        byteValue = buff[i+j]
+        if (byteValue >=0x20 and byteValue <=0x7f):
+            print("%c"%byteValue)
+        else:
+            print('.'),
+    print
+    return
+
+
+def PrintAllWordsFound(wordList):
+    print ("Index of all words")
+    print("----------------------------")
+
+    wordList.sort()
+
+    for entry in wordList:
+        print (entry)
+    print ('---------------')
+    print
+
+    return
+
+class class_Matrix:
+    weightedMatrix = set ()
+    def __init__(self):
+        try:
+            fileTheMatrix = open (gl_args.theMatrix, 'rb')
+            for line in fileTheMatrix
+            value = line.strip()
+            self.weightedMatrix.add(int(value,16))
+        except:
+            log.error('Matrix File Error'+gl_args.theMatrix)
+            sys.exit()
+        finally:
+            fileTheMatrix.close()
+        return
+    
