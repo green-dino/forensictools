@@ -6,7 +6,7 @@ import _psearch
 
 if __name__ == '_main_':
     Version = '1.0'
-    logging.basicConfig(filename='pSearchLog.log' level=logging.DEBUG, format='%(asctime)s%(messages)s')
+    logging.basicConfig(filename='pSearchLog.log', level=logging.DEBUG, format='%(asctime)s%(messages)s')
 
 # proccess command line args
 _psearch.ParseCommandLine()

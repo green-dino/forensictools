@@ -3,6 +3,7 @@
 import argparse
 import os
 import logging
+import sys
 
 log = logging.getLogger('main._psearch')
 
@@ -16,8 +17,9 @@ WINDOW_SIZE = 128  # values to dump when match
 
 # parse command function, uses argparse 
 
-def ParseCommanLine():
+def ParseCommandLine():
     parser = argparse.ArgumentParser('Python Search')
+
     parser.add_argument('-v', '--verbose', help='enables the printing of additional program messages', action='store_true')
     parser.add_argument('-k', '--keyWords', type=ValidateFileRead,
                         required=True,help='Specify the file containing search words')
@@ -27,7 +29,7 @@ def ParseCommanLine():
                         required=True, help='Specify the weight matrix file')
     
     global gl_args
-    gl_args = parser.parse_args
+    gl_args = parser.parse_args()
 
     DisplayMessage('Command line processed: Successfully')
 
@@ -72,6 +74,10 @@ def SearchWords():
     log.info('Search Words')
     log.info('Input File:'+gl_args.keyWords)
     log.info(searchWords)
+       # Calculate the size of the target file
+    sizeOfTarget = len(baTarget)
+
+    baTargetCopy = class_Matrix
 
     # open and read the target file, load bytearray
 
@@ -114,13 +120,13 @@ def SearchWords():
                     newWord = newWord + chr(baTarget[z])
                 newWord = newWord.lower()
                 if (newWord in searchWords):
-                        PrintBuffer(newWord, i-cnt, baTargetCopy, i PREDECESSOR_SIZE, WINDOW_SIZE) 
+                        PrintBuffer(newWord, i-cnt, baTargetCopy, i- PREDECESSOR_SIZE, WINDOW_SIZE) 
                         indexOfWords.append([newWord, i-cnt])
                         cnt = 0
                         print
                 else:
                     cnt = 0
-    print AllWordsFound(indexOfWords)
+    PrintAllWordsFound(indexOfWords)
     return
 # hexidecimal / ASCII Page 
 
@@ -142,10 +148,10 @@ def PrintBuffer(word, direcOffset, buff, offset, hexSize):
     for j in range (0,16):
         byteValue = buff[i+j]
         if (byteValue >=0x20 and byteValue <=0x7f):
-            print("%c"%byteValue)
+            print("%c"%byteValue, end='')
         else:
-            print('.'),
-    print
+            print('.', end=''),
+    print('')
     return
 
 
@@ -163,17 +169,15 @@ def PrintAllWordsFound(wordList):
     return
 
 class class_Matrix:
-    weightedMatrix = set ()
+    weightedMatrix = set()
     def __init__(self):
         try:
-            fileTheMatrix = open (gl_args.theMatrix, 'rb')
-            for line in fileTheMatrix
-            value = line.strip()
-            self.weightedMatrix.add(int(value,16))
+            fileTheMatrix = open(gl_args.theMatrix, 'rb')
+            for line in fileTheMatrix:  # Added ':' to the for loop
+                value = line.strip()
+                self.weightedMatrix.add(int(value, 16))
         except:
-            log.error('Matrix File Error'+gl_args.theMatrix)
+            log.error('Matrix File Error' + gl_args.theMatrix)
             sys.exit()
         finally:
             fileTheMatrix.close()
-        return
-    
