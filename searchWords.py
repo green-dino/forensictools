@@ -13,6 +13,8 @@ def load_search_words(file_path):
         print('File Handling Error:', str(e))
     return search_words
 
+# Word Frequency Analysis
+
 def word_frequency_analysis(search_words):
     word_count = {}
     for word in search_words:
