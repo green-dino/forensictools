@@ -33,12 +33,22 @@ while True:
 
     print(searchWords)
 
+    search_type = input('Choose search type (exact/partial): ')
     word_to_search = input('Enter a word to search: ')
 
-    if word_to_search.lower() in (word.lower() for word in searchWords):
-        print('Found Word')
-    else:
-        print('Not found')
+    if search_type == 'exact':
+        if word_to_search.lower() in (word.lower() for word in searchWords):
+            print('Found Word')
+        else:
+            print('Not found')
+    elif search_type == 'partial':
+        matching_words = [word for word in searchWords if word_to_search.lower() in word.lower()]
+        if matching_words:
+            print('Found Words:')
+            for word in matching_words:
+                print(word)
+        else:
+            print('No matches found')
 
     # Perform Word Frequency Analysis
     word_count = word_frequency_analysis(searchWords)
