@@ -83,43 +83,6 @@ To use `_searchWords`, follow these steps:
 - The script provides verbose mode for additional progress messages.
 - Contributions to the script are welcome.
 
-## _searchWords
-
-### Overview
-
-The `_searchWords` Python script is designed for searching through a text file for specific words and performing word frequency analysis. It allows users to load a list of search words from a file, search for words within another text file, and analyze the frequency of words found. The script is intended for use in a command-line environment.
-
-### Usage
-
-To use `_searchWords`, follow these steps:
-
-1. Prepare a Word List File: Create a text file containing a list of words you want to search for, with each word on a separate line.
-
-2. Run the Script:
-
-
-3. Input File: Enter the file path and name of the text file you want to search through.
-
-4. Search Words: The script will load the list of search words from the previously created file.
-
-5. Search Type: Choose between an exact or partial search.
-
-- Exact: Searches for an exact match of the entered word.
-- Partial: Searches for words containing the entered word as a substring.
-
-6. Enter Word: Enter the word you want to search for in the selected search type.
-
-7. Search Results: The script will display whether the word was found or not found based on the search type.
-
-8. Word Frequency Analysis: After the search, the script will perform a word frequency analysis on the loaded search words and display the count of each word.
-
-9. Repeat: You can choose to search again or exit the script.
-
-### Development Notes
-
-- This script can be customized for specific use cases and extended to include more advanced features.
-- Error handling for file operations is included to handle missing or inaccessible files.
-- Contributions to the script are welcome.
 
 ## Disclaimer
 
