@@ -3,7 +3,7 @@
 import logging
 import time
 import sys
-import _pfish # support function module 
+import _pFish # support function module 
 
 if __name__=='__main__':
     PFISH_Version='1.0'
