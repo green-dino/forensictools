@@ -6,6 +6,23 @@ import argparse
 import csv
 import logging
 
+# Parse Command Line Arguments
+# The script takes various command-line arguments for configuring its behavior, including specifying the hashing algorithm (MD5, SHA256, or SHA512), root path for hashing, and report path.
+
+# WalkPath Function
+# This function traverses the directory specified by the root path and calculates file hashes using the selected hashing algorithm. It also generates a CSV report containing file details and hash values.
+
+# Validation Functions
+# The script includes functions for validating directories (whether they exist, are readable, or writeable).
+
+# HashFile Function
+# This function calculates file hashes and collects file metadata such as size, timestamps, owner, and group. It supports MD5, SHA256, and SHA512 hashing algorithms.
+
+# DisplayMessage Function
+# A simple function to display messages (replace with your preferred logging method).
+
+# _CSVWriter Class
+# A class for writing data to a CSV file. It initializes the CSV file, writes rows of data, and closes the file.
 
 
 log = logging.getLogger('main._pfish')

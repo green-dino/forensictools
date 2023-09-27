@@ -2,7 +2,9 @@
 File Hashing 
 
 '''
-
+# The script provides a straightforward way to calculate the SHA-512 hash of a file, making it useful for verifying data integrity or security purposes.
+# Users can easily modify the script to calculate different hash types or perform additional actions based on the calculated hash value.
+# Ensure that you have the necessary permissions to access and read the selected file.
 
 import os        # Python standard library os/file system methods
 import hashlib   # Python standard library hashlib

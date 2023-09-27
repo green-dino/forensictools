@@ -2,6 +2,8 @@
 # CommandLine interface
 #python your_script.py -k path_to_keyword_file.txt -t path_to_target_file.txt -m path_to_matrix_file.txt
 
+#The script accepts command-line arguments to specify the keyword file, target file, and weight matrix file. 
+#It then performs keyword searches within the target file, highlighting matches and providing offset information.
 import argparse
 import os
 import logging
