@@ -20,14 +20,14 @@ logging.info('Version: '+sys.version)
 
 
 # Process Command Line Args 
-_pfish.ParseCommandLine()
+_pFish.ParseCommandLine()
 
 # Record Start time 
 startTime = time.time()
 
 
 # Traverse file systems and Hash files
-filesProcessed = _pfish.WalkPath()
+filesProcessed = _pFish.WalkPath()
 
 # Duration 
 endTime = time.time()

@@ -9,7 +9,7 @@ if __name__ == '_main_':
     logging.basicConfig(filename='pSearchLog.log', level=logging.DEBUG, format='%(asctime)s%(messages)s')
 
 # proccess command line args
-_psearch.ParseCommandLine()
+_pSearch.ParseCommandLine()
 
 log = logging.getLogger('main._psearch')
 log.info("p-search started")
@@ -18,7 +18,7 @@ log.info("p-search started")
 startTime = time.time()
 
 # perform keyword search
-_psearch.SearchWords()
+_pSearch.SearchWords()
 
 # record Ending time
 
