@@ -3,6 +3,9 @@
 import os
 import hashlib
 
+# This script is useful for quickly obtaining a list of files within a specified directory and can be a helpful tool for various file management and analysis tasks.
+# Users can customize the script to include additional file attributes or sort the table differently based on their specific requirements.
+
 # Python 3rd Party Libraries
 from prettytable import PrettyTable     # pip install prettytable
 

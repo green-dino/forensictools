@@ -5,6 +5,10 @@ import hashlib
 import argparse
 from datetime import datetime
 
+# The script provides a quick way to analyze file properties in a given folder, making it useful for tasks like file inventory, monitoring, or audit.
+# You can further customize or extend the script to include additional information or perform specific actions on the gathered data.
+# Ensure that you have necessary permissions to access the target folder and its files.
+
 # Python 3rd Party Libraries
 from prettytable import PrettyTable  # pip install prettytable
 
