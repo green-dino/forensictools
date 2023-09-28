@@ -2,6 +2,7 @@ import os
 import subprocess
 import csv
 
+
 # Define the search directory
 search_dir = '/Applications'
 
@@ -9,7 +10,7 @@ search_dir = '/Applications'
 file_pattern = '*Electron Framework*'
 
 # Define the output file path
-output_file = 'electron_results.txt'
+output_file = 'electron_results.csv'
 
 # Define the shell command to execute
 command = (
