@@ -1,5 +1,6 @@
 import os
 import subprocess
+import csv
 
 # Define the search directory
 search_dir = '/Applications'
@@ -19,36 +20,30 @@ command = (
 # Run the shell command
 result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
-# Print the result
-if result.returncode == 0:
-    print(result.stdout.strip())
-else:
-    print(f"Error executing command: {result.stderr.strip()}")
+# Split the result into lines
+output_lines = result.stdout.splitlines()
 
-# Open the output file for writing
-with open(output_file, 'w') as f:
-    # Walk through the directory and search for matching files
-    for root, _, files in os.walk(search_dir):
-        for filename in files:
-            if file_pattern in filename:
-                file_path = os.path.join(root, filename)
+# Create a CSV file and write the results
+with open(output_file, 'w', newline='') as csv_file:
+    csv_writer = csv.writer(csv_file)
+    
+    # Write the header row
+    csv_writer.writerow(["File Path", "Electron Version"])
+    
+    # Write the data rows
+    for line in output_lines:
+        # Split the line into parts based on space
+        parts = line.split(' ', 1)
+        
+        # Check if there are at least 2 parts (file path and Electron info)
+        if len(parts) >= 2:
+            file_path, electron_info = parts
+            # Write to CSV
+            csv_writer.writerow([file_path.strip(), electron_info.strip()])
+        else:
+            # Handle the case where there is no Electron version information
+            file_path = parts[0]
+            # Write to CSV with no Electron version
+            csv_writer.writerow([file_path.strip(), "No Electron Version"])
 
-                # Execute the shell command
-                command = command_template.format(file_path, file_path)
-
-                # Debug output
-                print(f"Processing file: {file_path}")
-
-                result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-
-                # Write the result to the output file
-                if result.returncode == 0:
-                    output = result.stdout.strip()
-                    f.write(output + '\n')
-                    print(output)
-                else:
-                    error_message = f"Error executing command for {file_path}: {result.stderr.strip()}"
-                    f.write(error_message + '\n')
-                    print(error_message)
-
-print(f"Results saved to {output_file}")
+print(f"Results written to {output_file}")
