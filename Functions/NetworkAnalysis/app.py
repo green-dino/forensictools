@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import tempfile
 from scapy.all import *
+from scapy.layers.inet import IP
 import networkx as nx
 import matplotlib
 matplotlib.use('Agg')
@@ -12,6 +13,10 @@ from bokeh.palettes import Spectral4
 import webbrowser
 
 app = Flask(__name__)
+
+def setup_logging():
+    log_format = '%(asctime)s [%(levelname)s] - %(message)s'
+    logging.basicConfig(filename='app.log', level=logging.INFO, format=log_format)
 
 @app.route("/")
 def index():
