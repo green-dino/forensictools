@@ -28,7 +28,7 @@ def upload_pcap():
         pcap_path = temp_pcap.name
 
     G = generate_network_map(pcap_path)
-    output_path = os.path.join(app.root_path, "templates", "network.html")
+    output_path = os.path.join(app.root_path, "static", "network.svg")
     plot_network_map(G, output_path)
     
     return redirect(url_for("show_network_map"))
@@ -59,7 +59,7 @@ def generate_network_map(pcap_path):
 
 def plot_network_map(G, output_path=None):
     pos = nx.spring_layout(G, k=0.15, iterations=20)
-    # ...
+    
 
     if output_path:
         fig, ax = plt.subplots(figsize=(8, 8))  # Create a Matplotlib figure and axis
