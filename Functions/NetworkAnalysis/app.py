@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for
 import tempfile
 from scapy.all import *
 import networkx as nx
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt  # Import Matplotlib
 from bokeh.io import output_file, show
 from bokeh.models import Plot, Range1d, MultiLine, Circle, HoverTool, BoxZoomTool, ResetTool, LabelSet, ColumnDataSource
@@ -26,7 +28,7 @@ def upload_pcap():
         pcap_path = temp_pcap.name
 
     G = generate_network_map(pcap_path)
-    output_path = "network.html"
+    output_path = os.path.join(app.root_path, "templates", "network.html")
     plot_network_map(G, output_path)
     
     return redirect(url_for("show_network_map"))
@@ -34,6 +36,7 @@ def upload_pcap():
 @app.route("/show_network_map")
 def show_network_map():
     return render_template("show_network_map.html")
+
 def generate_network_map(pcap_path):
     try:
         pcap = rdpcap(pcap_path)
@@ -59,11 +62,16 @@ def plot_network_map(G, output_path=None):
     # ...
 
     if output_path:
-        plt.savefig(output_path)
+        fig, ax = plt.subplots(figsize=(8, 8))  # Create a Matplotlib figure and axis
+        nx.draw(G, pos, with_labels=True, node_size=300, node_color='skyblue', font_size=10, font_color='black', font_weight='bold', alpha=0.8, width=0.5, edge_color='gray', ax=ax)
+        plt.title("Network Map")
+        plt.axis('off')  # Turn off axis
+        plt.savefig(output_path, format="svg")  # Save the plot as an SVG file (change format to SVG)
+        plt.close(fig)  # Close the Matplotlib figure
         return f"Network map saved to {output_path}"  # Return a status message
     else:
-        plt.show()
         return "Network map displayed in the browser"  # Return a status message
+
 
 if __name__ == "__main__":
     app.run(debug=True)
