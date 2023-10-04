@@ -3,7 +3,7 @@ import nltk
 from prettytable import PrettyTable
 from nltk.corpus import gutenberg
 from nltk.book import *
-
+from nltk.corpus import wordnet as wn
 
 print((type(text1)))
 print(len(text1))
@@ -38,3 +38,16 @@ print(('vocab most common:', (vocab.most_common(20))))
 
 
 
+# Dictionary 
+w = wn.synset("unmitigated.a.01")
+
+
+print(w.name(), '-', w.definition())
+print(w.examples())
+
+#synsets
+
+cat = wn.synset("cat.n.01")
+cat.hypernyms()
+
+print(cat)
