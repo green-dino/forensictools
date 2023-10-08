@@ -1,50 +1,58 @@
-'''
-File Hashing 
+import os
+import hashlib
+import sys
+import time
+from prettytable import PrettyTable
 
-'''
-# The script provides a straightforward way to calculate the SHA-512 hash of a file, making it useful for verifying data integrity or security purposes.
-# Users can easily modify the script to calculate different hash types or perform additional actions based on the calculated hash value.
-# Ensure that you have the necessary permissions to access and read the selected file.
+class FileHasher:
+    def __init__(self):
+        self.tbl = PrettyTable(['Path', 'Status', 'FileSize', 'LastModified', 'LastAccess', 'Created', 'SHA-512 HASH', 'Error Info'])
 
-import os        # Python standard library os/file system methods
-import hashlib   # Python standard library hashlib
-import sys       # Python standard library system specifics and functions
-import time 
+    def hash_file(self, file_path):
+        try:
+            with open(file_path, 'rb') as target:
+                file_contents = target.read()
+                sha512_obj = hashlib.sha512()
+                sha512_obj.update(file_contents)
+                hex_digest = sha512_obj.hexdigest()
+                return hex_digest
+        except Exception as err:
+            return str(err)
 
+    def process_directory(self, directory_path):
+        for root, _, files in os.walk(directory_path):
+            for file_name in files:
+                file_to_hash = os.path.join(root, file_name)
+                if os.path.isfile(file_to_hash):
+                    print("\nAttempting to hash file:", file_to_hash)
+                    file_info = os.stat(file_to_hash)
+                    file_size = file_info.st_size
+                    last_modified = time.ctime(file_info.st_mtime)
+                    last_access = time.ctime(file_info.st_atime)
+                    created = time.ctime(file_info.st_ctime)
+                    hash_value = self.hash_file(file_to_hash)
+                    error_info = ""
+                    if isinstance(hash_value, str):
+                        error_info = hash_value
+                        hash_value = "Error"
+                    self.tbl.add_row([file_to_hash, "Success", file_size, last_modified, last_access, created, hash_value, error_info])
+                else:
+                    self.tbl.add_row([file_to_hash, "Invalid File", "-", "-", "-", "-", "-", ""])
 
-#python 3rd Party Library
-from prettytable import PrettyTable # pip install prettytable 
+    def print_result_table(self):
+        print(self.tbl)
 
-while True:
-    fileToHash = input("\nFile to Hash >>> " )
-    if os.path.isfile(fileToHash):
-        break
-    else:
-        print("\nInvalid File ... Please Try Again")
-        
-
-tbl = PrettyTable(['Path','Status','FileSize','LastModified','LastAccess','Created','SHA-256 HASH','Error Info'])
-
-
-#Pseuedo Constants
-DIR = input("Enter Directory Path: ")
-
-
-
-try:
-    print("\nAttempting to hash file: ", fileToHash)
+if __name__ == "__main__":
+    file_hasher = FileHasher()
     
-    with open(fileToHash, 'rb') as target:
-        
-        fileContents = target.read()
-        
-        sha512Obj = hashlib.sha512()
-        sha512Obj.update(fileContents)
-        hexDigest = sha512Obj.hexdigest()
+    while True:
+        directory_path = input("\nEnter the directory path to hash files >>> ")
+        if os.path.isdir(directory_path):
+            break
+        else:
+            print("\nInvalid Directory... Please Try Again")
 
-        print("\n\n",fileToHash, " SHA-512 Hex Digest = ", hexDigest, "\n\n")
+    file_hasher.process_directory(directory_path)
 
-except Exception as err:
-    sys.exit("\nException: "+str(err))
-    
-print("Script Done")
+    print("Script Done")
+    file_hasher.print_result_table()

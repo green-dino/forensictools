@@ -2,69 +2,77 @@ import os
 import csv
 import json
 
-def csv_to_dictionary(file_path):
-    data_dictionary = {}
+class DataStorageManager:
+    def __init__(self, storage_file_path="data_storage.json"):
+        self.storage_file_path = storage_file_path
+        self.data_storage = {}
 
-    with open(file_path, 'r', newline='', encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile)
-        sheet_data = [row for row in reader]
+    def csv_to_dictionary(self, file_path):
+        with open(file_path, 'r', newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            sheet_data = [row for row in reader]
+        return sheet_data
 
-    return sheet_data
+    def save_data_storage(self):
+        with open(self.storage_file_path, 'w') as json_file:
+            json.dump(self.data_storage, json_file)
 
-def save_data_storage(data_storage, file_path):
-    with open(file_path, 'w') as json_file:
-        json.dump(data_storage, json_file)
+    def load_data_storage(self):
+        if os.path.exists(self.storage_file_path):
+            with open(self.storage_file_path, 'r') as json_file:
+                self.data_storage = json.load(json_file)
 
-def load_data_storage(file_path):
-    with open(file_path, 'r') as json_file:
-        data_storage = json.load(json_file)
-    return data_storage
+    def print_dictionary_keys(self):
+        print("Dictionary keys:")
+        for key in self.data_storage:
+            print("- " + key)
 
-def print_dictionary_keys(data_dict):
-    print("Dictionary keys:")
-    for key in data_dict:
-        print("- " + key)
+    def process_folder(self, folder_path):
+        if os.path.exists(self.storage_file_path):
+            self.load_data_storage()
+            print("Loaded data storage from file.")
+        else:
+            self.data_storage = {}
 
-def main():
-    folder_path = input("Enter the path of the folder containing CSV files: ")
-    storage_file_path = "data_storage.json"  # File to save and load data_storage
-    
-    if os.path.exists(storage_file_path):
-        data_storage = load_data_storage(storage_file_path)
-        print("Loaded data storage from file.")
-    else:
-        data_storage = {}  # Create a dictionary to store all data
-        
-        for filename in os.listdir(folder_path):
-            if filename.endswith(".csv"):
-                file_path = os.path.join(folder_path, filename)
-                sheet_name = os.path.splitext(filename)[0]
-                
-                sheet_data = csv_to_dictionary(file_path)
-                data_storage[sheet_name] = {"data": sheet_data}  # Store the data dictionary
-        
-        save_data_storage(data_storage, storage_file_path)
-        print("Saved data storage to file.")
+            for filename in os.listdir(folder_path):
+                if filename.endswith(".csv"):
+                    file_path = os.path.join(folder_path, filename)
+                    sheet_name = os.path.splitext(filename)[0]
 
-    print("Available sheet names:")
-    for sheet_name in data_storage.keys():
-        print("- " + sheet_name)
+                    sheet_data = self.csv_to_dictionary(file_path)
+                    self.data_storage[sheet_name] = {"data": sheet_data}
 
-    # Access data from the 'data_storage' dictionary after the 'main' function has executed
-    sheet_name_to_access = input("Enter the sheet name you want to access: ")
-    
-    if sheet_name_to_access in data_storage:
-        sheet_data = data_storage[sheet_name_to_access]["data"]
-        print(f"Data from sheet '{sheet_name_to_access}':")
-        
-        for row_data in sheet_data:
-            print(row_data)
-    else:
-        print("Sheet name not found in data storage.")
-    
-    # View the components in data storage
-    print("\nComponents in data storage:")
-    print_dictionary_keys(data_storage)
+            self.save_data_storage()
+            print("Saved data storage to file.")
+
+    def list_available_sheets(self):
+        print("Available sheet names:")
+        for sheet_name in self.data_storage.keys():
+            print("- " + sheet_name)
+
+    def access_sheet_data(self, sheet_name):
+        if sheet_name in self.data_storage:
+            sheet_data = self.data_storage[sheet_name]["data"]
+            print(f"Data from sheet '{sheet_name}':")
+
+            for row_data in sheet_data:
+                print(row_data)
+        else:
+            print("Sheet name not found in data storage.")
+
+    def view_components_in_data_storage(self):
+        print("\nComponents in data storage:")
+        self.print_dictionary_keys()
 
 if __name__ == "__main__":
-    main()
+    manager = DataStorageManager()
+
+    folder_path = input("Enter the path of the folder containing CSV files: ")
+    manager.process_folder(folder_path)
+
+    manager.list_available_sheets()
+
+    sheet_name_to_access = input("Enter the sheet name you want to access: ")
+    manager.access_sheet_data(sheet_name_to_access)
+
+    manager.view_components_in_data_storage()
