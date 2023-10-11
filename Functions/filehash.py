@@ -1,6 +1,5 @@
 import os
 import hashlib
-import sys
 import time
 from prettytable import PrettyTable
 
@@ -42,9 +41,15 @@ class FileHasher:
     def print_result_table(self):
         print(self.tbl)
 
-if __name__ == "__main__":
+def hash_files_in_directory(directory_path):
     file_hasher = FileHasher()
-    
+    if os.path.isdir(directory_path):
+        file_hasher.process_directory(directory_path)
+        file_hasher.print_result_table()
+    else:
+        print("\nInvalid Directory")
+
+if __name__ == "__main__":
     while True:
         directory_path = input("\nEnter the directory path to hash files >>> ")
         if os.path.isdir(directory_path):
@@ -52,7 +57,5 @@ if __name__ == "__main__":
         else:
             print("\nInvalid Directory... Please Try Again")
 
-    file_hasher.process_directory(directory_path)
-
+    hash_files_in_directory(directory_path)
     print("Script Done")
-    file_hasher.print_result_table()
